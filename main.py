@@ -1,16 +1,27 @@
 import numpy as np
-from src.tsp_solver import hill_climbing
-from src.visualization import plot_route
+from tsp_solver import TSPSolver
+from visualization import Visualization
 
-# Load the example distance matrix
-distance_matrix = np.load('data/distance_matrix.npy')
+# Given distance matrix
+distance_matrix = np.array([
+    [0, 7, 20, 15, 12],
+    [10, 0, 6, 14, 18],
+    [20, 6, 0, 15, 30],
+    [15, 14, 25, 0, 2],
+    [12, 18, 30, 2, 0]
+])
 
-# Run the hill climbing algorithm
-max_iterations = 1000
-best_route, best_distance = hill_climbing(distance_matrix, max_iterations)
+# Names of the places
+places = ['Dorado Park', 'Khomasdal', 'Katutura', 'Eros', 'Klein Windhoek']
 
-# Plot the best route
-plot_route(best_route, distance_matrix)
+def main():
+    tsp_solver = TSPSolver(distance_matrix)
+    best_route, best_distance = tsp_solver.hill_climbing()
+    print("Best Route:", [places[i] for i in best_route])
+    print("Total Distance:", best_distance)
 
-print("Best route found:", best_route)
-print("Total distance of the best route:", best_distance)
+    visualization = Visualization(places, distance_matrix)
+    visualization.plot_route(best_route)
+
+if __name__ == "__main__":
+    main()
